@@ -9,8 +9,10 @@ from xml.etree import ElementTree
 import argparse
 import json
 import subprocess
+import sys
 import time
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from server import FEED_URL, YAHOO_REALTIME_URL, YAHOO_TRENDS_URL, YahooTrendParser
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"

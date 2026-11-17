@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <title>모아 — 나만의 로컬 포털</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="모아 홈"><span class="brand-mark">모</span><span>모아</span></a>
+    <nav class="top-links" aria-label="바로가기"><a href="#trends">실시간 이슈</a><a href="#quick">바로가기</a></nav>
+    <div class="header-actions">
+      <div class="language-switch" role="group" aria-label="언어 선택">
+        <button type="button" class="language-button selected" data-locale="ko" aria-pressed="true">KR</button>
+        <button type="button" class="language-button" data-locale="en" aria-pressed="false">EN</button>
+        <button type="button" class="language-button" data-locale="ja" aria-pressed="false">JP</button>
+      </div>
+      <button class="icon-button" id="themeButton" aria-label="테마 변경" title="테마 변경">◐</button>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="eyebrow"><span class="live-dot"></span> 나만의 인터넷 시작 페이지</div>
+      <h1>궁금한 것을 <span>모아</span>보세요</h1>
+      <p class="subtitle">여러 검색 포털과 오늘의 이슈를 한곳에서</p>
+      <form id="searchForm" class="search-box">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="query" type="search" placeholder="무엇이 궁금하세요?" autocomplete="off" aria-label="검색어">
+        <select id="engine" aria-label="검색 포털"><option value="google">Google</option><option value="naver">NAVER</option><option value="daum">Daum</option><option value="bing">Bing</option></select>
+        <button type="submit" aria-label="검색">검색 <span>↗</span></button>
+      </form>
+      <div class="engine-pills" aria-label="검색 포털 바로 선택">
+        <button data-engine="google" class="engine-pill selected"><span class="g-icon">G</span> Google</button>
+        <button data-engine="naver" class="engine-pill"><span class="n-icon">N</span> NAVER</button>
+        <button data-engine="daum" class="engine-pill"><span class="d-icon">D</span> Daum</button>
+        <button data-engine="bing" class="engine-pill"><span class="b-icon">b</span> Bing</button>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="main-column">
+        <section class="panel trend-panel" id="trends">
+          <div class="section-heading">
+            <div><div class="kicker">WHAT'S HAPPENING</div><h2>지금 많이 찾는 이슈</h2></div>
+            <div class="heading-actions"><span id="updatedAt" class="updated">뉴스 트렌드</span><button id="refreshTrends" class="refresh" aria-label="이슈 새로고침" title="새로고침">↻</button></div>
+          </div>
+          <div class="trend-sources" role="tablist" aria-label="이슈 출처">
+            <button class="trend-source selected" type="button" role="tab" aria-selected="true" data-source="google">Google</button>
+            <button class="trend-source" type="button" role="tab" aria-selected="false" data-source="naver">NAVER</button>
+          </div>
+          <p id="trendNote" class="section-note">Google Trends 대한민국 인기 검색어 · 최근 1시간 순위 변화</p>
+          <ol id="trendList" class="trend-list"><li class="loading">이슈를 불러오는 중…</li></ol>
+          <div id="trendMessage" class="notice" hidden></div>
+        </section>
+        <section class="panel news-panel">
+          <div class="section-heading"><div><div class="kicker">EXPLORE</div><h2>주제별로 둘러보기</h2></div></div>
+          <div class="topic-grid">
+            <a class="topic-card" href="https://news.google.com/topstories?hl=ko&gl=KR&ceid=KR:ko"><span class="topic-icon news">▤</span><span><b>뉴스</b><small>오늘의 주요 소식</small></span><span class="arrow">↗</span></a>
+            <a class="topic-card" href="https://www.youtube.com/results?search_query="><span class="topic-icon video">▶</span><span><b>동영상</b><small>영상 콘텐츠 검색</small></span><span class="arrow">↗</span></a>
+            <a class="topic-card" href="https://www.google.com/imghp?hl=ko"><span class="topic-icon image">▧</span><span><b>이미지</b><small>사진과 이미지 찾기</small></span><span class="arrow">↗</span></a>
+            <a class="topic-card" href="https://map.naver.com/"><span class="topic-icon map">⌖</span><span><b>지도</b><small>장소와 길 찾기</small></span><span class="arrow">↗</span></a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="panel quick-panel" id="quick">
+          <div class="section-heading"><div><div class="kicker">QUICK ACCESS</div><h2>바로가기</h2></div><button id="editLinks" class="text-button">편집</button></div>
+          <div id="quickLinks" class="quick-grid"></div>
+          <form id="addLinkForm" class="add-link-form" hidden>
+            <input id="linkName" placeholder="이름" aria-label="바로가기 이름" required maxlength="12">
+            <input id="linkUrl" placeholder="주소 (예: example.com)" aria-label="바로가기 주소" required>
+            <button type="submit">추가</button>
+          </form>
+        </section>
+        <section class="panel tools-panel">
+          <div class="section-heading"><div><div class="kicker">LITTLE TOOLS</div><h2>간편 도구</h2></div></div>
+          <button class="tool-row" id="weatherTool"><span class="tool-icon weather">☀</span><span><b>날씨</b><small>지역 날씨 검색</small></span><span class="arrow">↗</span></button>
+          <button class="tool-row" id="calcTool"><span class="tool-icon calc">＋</span><span><b>계산기</b><small>간단한 계산</small></span><span class="arrow">↗</span></button>
+          <button class="tool-row" id="dictionaryTool"><span class="tool-icon dict">가</span><span><b>사전</b><small>단어 뜻 찾아보기</small></span><span class="arrow">↗</span></button>
+        </section>
+        <div class="privacy-note"><span>⌂</span><p>검색어와 바로가기는<br><b>이 브라우저에만</b> 저장돼요.</p></div>
+      </aside>
+    </section>
+    <footer>모아 포털 <span>·</span> 개인용 로컬 시작 페이지 <span>·</span> 이슈 출처: Google Trends</footer>
+  </main>
+  <dialog id="calcDialog" class="calc-dialog">
+    <form method="dialog"><button class="dialog-close" aria-label="닫기">×</button></form>
+    <div class="kicker">LITTLE TOOL</div><h2>간편 계산기</h2>
+    <input id="calcInput" class="calc-input" placeholder="예: (1200 + 3500) * 0.1" inputmode="decimal" aria-label="계산식">
+    <div class="calc-result" id="calcResult">계산 결과가 여기에 표시돼요</div>
+    <button id="calculate" class="primary-button">계산하기</button>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>

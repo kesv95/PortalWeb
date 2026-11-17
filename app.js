@@ -33,7 +33,7 @@ const copy = {
         toolsKicker: 'LITTLE TOOLS', toolsTitle: '간편 도구', weather: '날씨', weatherSub: '지역 날씨 검색', calculator: '계산기', calculatorSub: '간단한 계산', dictionary: '사전', dictionaryMark: '가', dictionarySub: '단어 뜻 찾아보기',
         privacy: '검색어와 바로가기는<br><b>이 브라우저에만</b> 저장돼요.', footer: '모아 포털 <span>·</span> 개인용 로컬 시작 페이지 <span>·</span> 이슈 출처: Google Trends',
         calcTitle: '간편 계산기', calcInput: '예: (1200 + 3500) * 0.1', expressionLabel: '계산식', calcInitial: '계산 결과가 여기에 표시돼요', calculate: '계산하기', close: '닫기',
-        weatherPrompt: '날씨를 확인할 지역을 입력해 주세요.', weatherTerm: '날씨', dictionaryPrompt: '뜻을 찾아볼 단어를 입력해 주세요.', calcInvalid: '숫자와 + − × ÷ 괄호만 입력해 주세요.', calcResult: '결과:', calcImpossible: '계산할 수 없는 식이에요.', calcCheck: '계산식을 확인해 주세요.', updated: '업데이트',
+        weatherPrompt: '날씨를 확인할 지역을 입력해 주세요.', weatherTerm: '날씨', dictionaryPrompt: '뜻을 찾아볼 단어를 입력해 주세요.', calcInvalid: '숫자와 + − × ÷ 괄호만 입력해 주세요.', calcResult: '결과:', calcImpossible: '계산할 수 없는 식이에요.', calcCheck: '계산식을 확인해 주세요.', updated: '업데이트', staleLabel: '갱신 실패', staleMessage: '최신 이슈를 가져오지 못해 마지막으로 받은 목록을 보여드려요.',
         defaultNames: {지도: '지도', 뉴스: '뉴스', 날씨: '날씨'}
     },
     en: {
@@ -48,7 +48,7 @@ const copy = {
         toolsKicker: 'LITTLE TOOLS', toolsTitle: 'Handy tools', weather: 'Weather', weatherSub: 'Search local weather', calculator: 'Calculator', calculatorSub: 'Quick calculations', dictionary: 'Dictionary', dictionaryMark: 'A', dictionarySub: 'Look up a word',
         privacy: 'Searches and shortcuts are<br>stored <b>only in this browser</b>.', footer: 'Moa Portal <span>·</span> Personal start page <span>·</span> Trends by Google Trends',
         calcTitle: 'Calculator', calcInput: 'e.g. (1200 + 3500) * 0.1', expressionLabel: 'Expression', calcInitial: 'Your result will appear here', calculate: 'Calculate', close: 'Close',
-        weatherPrompt: 'Enter a location for the weather.', weatherTerm: 'weather', dictionaryPrompt: 'Enter a word to look up.', calcInvalid: 'Use numbers, + − × ÷, and parentheses only.', calcResult: 'Result:', calcImpossible: 'This expression cannot be calculated.', calcCheck: 'Check the expression and try again.', updated: 'updated',
+        weatherPrompt: 'Enter a location for the weather.', weatherTerm: 'weather', dictionaryPrompt: 'Enter a word to look up.', calcInvalid: 'Use numbers, + − × ÷, and parentheses only.', calcResult: 'Result:', calcImpossible: 'This expression cannot be calculated.', calcCheck: 'Check the expression and try again.', updated: 'updated', staleLabel: 'refresh failed', staleMessage: 'Could not fetch the latest trends, so the last list received is shown.',
         defaultNames: {지도: 'Maps', 뉴스: 'News', 날씨: 'Weather'}
     },
     ja: {
@@ -63,7 +63,7 @@ const copy = {
         toolsKicker: 'LITTLE TOOLS', toolsTitle: '便利なツール', weather: '天気', weatherSub: '地域の天気を検索', calculator: '電卓', calculatorSub: 'かんたんな計算', dictionary: '辞書', dictionaryMark: '辞', dictionarySub: '単語の意味を調べる',
         privacy: '検索語とショートカットは<br><b>このブラウザー内のみ</b>に保存されます。', footer: 'モア ポータル <span>·</span> 個人用スタートページ <span>·</span> トレンド提供: Google Trends',
         calcTitle: '電卓', calcInput: '例: (1200 + 3500) * 0.1', expressionLabel: '計算式', calcInitial: '計算結果がここに表示されます', calculate: '計算する', close: '閉じる',
-        weatherPrompt: '天気を調べる地域を入力してください。', weatherTerm: '天気', dictionaryPrompt: '意味を調べる単語を入力してください。', calcInvalid: '数字と + − × ÷、括弧のみ入力できます。', calcResult: '結果:', calcImpossible: '計算できない式です。', calcCheck: '計算式を確認してください。', updated: '更新',
+        weatherPrompt: '天気を調べる地域を入力してください。', weatherTerm: '天気', dictionaryPrompt: '意味を調べる単語を入力してください。', calcInvalid: '数字と + − × ÷、括弧のみ入力できます。', calcResult: '結果:', calcImpossible: '計算できない式です。', calcCheck: '計算式を確認してください。', updated: '更新', staleLabel: '更新失敗', staleMessage: '最新のトレンドを取得できなかったため、最後に取得した一覧を表示しています。',
         defaultNames: {지도: '地図', 뉴스: 'ニュース', 날씨: '天気'}
     }
 };
@@ -239,7 +239,7 @@ $('#addLinkForm').addEventListener('submit', (event) => {
     event.target.reset();
 });
 
-async function loadTrends() {
+async function loadTrends({force = false} = {}) {
     const requestId = ++trendRequestId;
     const list = $('#trendList');
     const message = $('#trendMessage');
@@ -297,7 +297,7 @@ async function loadTrends() {
             data = snapshot.feeds?.[`${geo}:${source}`];
             if (!data) throw new Error(text.pagesFeedNotReady);
         } else {
-            const response = await fetch(`/api/trends?geo=${geo}&source=${source}`);
+            const response = await fetch(`/api/trends?geo=${geo}&source=${source}${force ? '&force=1' : ''}`, {cache: 'no-store'});
             data = await response.json();
             if (!response.ok) throw new Error(text.fetchError);
         }
@@ -339,8 +339,8 @@ async function loadTrends() {
             li.append(rank, link, arrow);
             list.append(li);
         });
-        $('#updatedAt').textContent = data.updated ? `${data.updated} ${text.updated}` : text.updated;
-        message.textContent = source === 'yahoo'
+        $('#updatedAt').textContent = formatUpdated(data, text);
+        message.textContent = data.stale ? text.staleMessage : source === 'yahoo'
             ? (yahooRealtimeFallback
                 ? (data.comparisonReady ? text.yahooRealtimeComparison : text.yahooRealtimeWarmup)
                 : (data.comparisonReady ? text.yahooComparison : text.yahooWarmup))
@@ -356,7 +356,17 @@ async function loadTrends() {
     }
 }
 
-$('#refreshTrends').addEventListener('click', loadTrends);
+function formatUpdated(data, text) {
+    // updatedAt(ISO, 시간대 포함)이 있으면 보는 사람의 현지 시각으로 바꿔 표시한다.
+    const at = data.updatedAt ? new Date(data.updatedAt) : null;
+    const time = at && !Number.isNaN(at.getTime())
+        ? at.toLocaleTimeString(locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : 'ko-KR', {hour: '2-digit', minute: '2-digit', hour12: false})
+        : data.updated;
+    const label = time ? `${time} ${text.updated}` : text.updated;
+    return data.stale ? `${label} · ${text.staleLabel}` : label;
+}
+
+$('#refreshTrends').addEventListener('click', () => loadTrends({force: true}));
 $('.trend-sources').addEventListener('click', (event) => {
     const button = event.target.closest('.trend-source');
     if (!button) return;

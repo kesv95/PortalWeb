@@ -1,17 +1,26 @@
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.error import URLError
 from urllib.request import Request, urlopen
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from xml.etree import ElementTree
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, quote_plus, urljoin, urlparse
+from urllib.parse import parse_qs, quote_plus, unquote, urljoin, urlparse
+from functools import partial
+from pathlib import Path
 import json
 import threading
 
 HOST, PORT = "127.0.0.1", 8765
+# 어느 폴더에서 실행하든 server.py가 있는 폴더의 파일만 제공한다.
+BASE_DIR = Path(__file__).resolve().parent
+# 브라우저로 열 필요가 없는 개발용 파일·폴더는 404로 막는다.
+BLOCKED_NAMES = {"__pycache__", "scripts", "server.py"}
 FEED_URL = "https://trends.google.com/trending/rss?geo={geo}"
 YAHOO_TRENDS_URL = "https://search.yahoo.co.jp/?lang=1&sub=0"
 YAHOO_REALTIME_URL = "https://search.yahoo.co.jp/realtime/"
+KST = timezone(timedelta(hours=9))
+CACHE_SECONDS = 600
+FORCE_MIN_SECONDS = 30  # 새로고침 버튼을 연타해도 외부 서비스에 과도한 요청이 가지 않도록 제한
 cache = {}
 cache_lock = threading.Lock()
 
@@ -53,17 +62,31 @@ class YahooTrendParser(HTMLParser):
             self.anchor["text"].append(data)
 
 class Handler(SimpleHTTPRequestHandler):
+    def is_blocked(self):
+        parts = [part for part in unquote(urlparse(self.path).path).replace("\\", "/").split("/") if part]
+        return any(part.startswith(".") or part in BLOCKED_NAMES for part in parts)
+
     def do_GET(self):
         if urlparse(self.path).path == "/api/trends":
             self.serve_trends()
             return
+        if self.is_blocked():
+            self.send_error(404)
+            return
         super().do_GET()
+
+    def do_HEAD(self):
+        if self.is_blocked():
+            self.send_error(404)
+            return
+        super().do_HEAD()
 
     def serve_trends(self):
         now = datetime.now().timestamp()
         query = parse_qs(urlparse(self.path).query)
         geo = query.get("geo", ["KR"])[0].upper()
         source = query.get("source", ["google"])[0].lower()
+        force = query.get("force", ["0"])[0] == "1"
         if geo not in {"KR", "US", "JP"}:
             self.send_json({"error": "지원하지 않는 지역입니다."}, 400)
             return
@@ -71,8 +94,11 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json({"error": "지원하지 않는 트렌드 출처입니다."}, 400)
             return
         with cache_lock:
-            region_cache = cache.setdefault(f"{geo}:{source}", {"at": 0, "items": [], "history": []})
-            if now - region_cache["at"] > 600 or not region_cache["items"]:
+            region_cache = cache.setdefault(f"{geo}:{source}", {"at": 0, "attempt": 0, "items": [], "history": [], "error": None})
+            expired = now - region_cache["at"] > CACHE_SECONDS
+            forced = force and now - region_cache["attempt"] >= FORCE_MIN_SECONDS
+            if expired or forced or not region_cache["items"]:
+                region_cache["attempt"] = now
                 try:
                     request_url = YAHOO_TRENDS_URL if source == "yahoo" else FEED_URL.format(geo=geo)
                     request = Request(request_url, headers={
@@ -118,8 +144,11 @@ class Handler(SimpleHTTPRequestHandler):
                                 items.append({"title": title, "url": f"https://www.google.com/search?q={quote_plus(title)}&gl={geo}&hl={language}"})
                     history = [entry for entry in region_cache["history"] if entry["at"] >= now - 7200]
                     history.append({"at": now, "items": items})
-                    region_cache.update(at=now, items=items, history=history, feed_type=feed_type if source == "yahoo" else "google")
+                    region_cache.update(at=now, items=items, history=history, error=None, feed_type=feed_type if source == "yahoo" else "google")
                 except (URLError, TimeoutError, ElementTree.ParseError, OSError, ValueError) as error:
+                    # 이전 목록은 계속 보여주되, 갱신에 실패했다는 사실을 응답에 남긴다.
+                    region_cache["error"] = str(error)
+                    print(f"[trends] {geo}:{source} 갱신 실패: {error}")
                     if not region_cache["items"]:
                         service = "Yahoo! JAPAN" if source == "yahoo" else "Google Trends"
                         self.send_json({"error": f"{service} 연결 오류: {error}"}, 502)
@@ -131,8 +160,16 @@ class Handler(SimpleHTTPRequestHandler):
             for index, item in enumerate(region_cache["items"]):
                 old_rank = previous_ranks.get(item["title"])
                 items.append({**item, "rank": index + 1, "change": (old_rank - (index + 1)) if old_rank else None})
-            updated = datetime.fromtimestamp(region_cache["at"]).strftime("%H:%M")
-            self.send_json({"items": items, "updated": updated, "comparisonReady": baseline is not None, "feedType": region_cache.get("feed_type", source)})
+            updated_at = datetime.fromtimestamp(region_cache["at"], KST)
+            self.send_json({
+                "items": items,
+                "updated": updated_at.strftime("%H:%M"),
+                "updatedAt": updated_at.isoformat(timespec="seconds"),
+                "stale": region_cache["error"] is not None,
+                "error": region_cache["error"],
+                "comparisonReady": baseline is not None,
+                "feedType": region_cache.get("feed_type", source),
+            })
 
     def send_json(self, data, status=200):
         payload = json.dumps(data, ensure_ascii=False).encode("utf-8")
@@ -146,4 +183,4 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     print(f"모아 로컬 포털 실행 중: http://{HOST}:{PORT}")
     print("종료하려면 Ctrl+C를 누르세요.")
-    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
+    ThreadingHTTPServer((HOST, PORT), partial(Handler, directory=str(BASE_DIR))).serve_forever()

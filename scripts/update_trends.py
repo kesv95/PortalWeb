@@ -1,6 +1,6 @@
 """Fetch the public trend sources for the static GitHub Pages build."""
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import quote_plus
@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from server import FEED_URL, YAHOO_REALTIME_URL, YAHOO_TRENDS_URL, YahooTrendParser
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+KST = timezone(timedelta(hours=9))
 FEEDS = {"KR:google": "KR", "US:google": "US", "JP:google": "JP", "JP:yahoo": "JP"}
 
 
@@ -107,12 +108,17 @@ def update(previous, now):
             titles = [item["title"] for item in raw_items]
             if not history or now - history[-1]["at"] >= 600:
                 history.append({"at": now, "titles": titles})
-            updated = datetime.fromtimestamp(now, timezone.utc).strftime("%H:%M")
+            updated_at = datetime.fromtimestamp(now, KST)
+            updated = updated_at.strftime("%H:%M")
+            updated_iso = updated_at.isoformat(timespec="seconds")
+            error_text = None
         except (URLError, TimeoutError, OSError, ElementTree.ParseError, ValueError) as error:
             print(f"Could not refresh {key}: {error}")
             raw_items = [{"title": item["title"], "url": item["url"]} for item in old_feed.get("items", [])]
             feed_type = old_feed.get("feedType", "google")
             updated = old_feed.get("updated", "")
+            updated_iso = old_feed.get("updatedAt", "")
+            error_text = str(error)
             if not raw_items:
                 history = []
 
@@ -120,6 +126,9 @@ def update(previous, now):
         feeds[key] = {
             "items": items,
             "updated": updated,
+            "updatedAt": updated_iso,
+            "stale": error_text is not None,
+            "error": error_text,
             "comparisonReady": comparison_ready,
             "feedType": feed_type,
         }

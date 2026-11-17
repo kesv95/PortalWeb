@@ -26,7 +26,7 @@ const copy = {
         eyebrow: '나만의 인터넷 시작 페이지', headline: '궁금한 것을 <span>모아</span>보세요', subtitle: '여러 검색 포털과 오늘의 이슈를 한곳에서', query: '무엇이 궁금하세요?', queryLabel: '검색어', engineLabel: '검색 포털', search: '검색', engineNav: '검색 포털 바로 선택', engineGoogle: 'Google', engineNaver: 'NAVER', engineBing: 'Bing', engineYahoo: 'Yahoo! JAPAN',
         trendKicker: "WHAT'S HAPPENING", trendTitle: '지금 많이 찾는 이슈', refresh: '이슈 새로고침', sourceLabel: '이슈 출처', trendNote: 'Google Trends 대한민국 인기 검색어 · 최근 1시간 순위 변화', loading: '이슈를 불러오는 중…',
         trendComparison: 'Google Trends 현재 순위를 약 1시간 전 저장된 순위와 비교했어요. 새 항목은 NEW로 표시됩니다.', trendWarmup: 'Google Trends 제공 순위예요. 순위 변화는 시작 후 1시간 정도 데이터가 쌓이면 표시됩니다.',
-        trendError: '인기 검색어를 가져오지 못했어요.', fetchError: '트렌드를 가져오지 못했어요. 인터넷 연결을 확인한 뒤 새로고침해 주세요.', bingUnavailable: 'Bing은 공개 실시간 검색어 순위 데이터를 제공하지 않아 이곳에서 순위 목록을 표시할 수 없어요.', bingLink: 'Bing 뉴스 열기 ↗', bingNote: 'Microsoft의 공개 검색 트렌드 API가 종료되어 Bing 검색어 순위를 불러올 수 없습니다.', yahooNote: 'Yahoo! JAPAN 웹 검색의 급상승 검색어 · 최근 1시간 순위 변화', yahooRealtimeNote: 'Yahoo!リアルタイム検索의 화제 키워드 (SNS 트렌드)', yahooComparison: 'Yahoo! JAPAN의 현재 순위를 약 1시간 전 저장된 순위와 비교했어요.', yahooWarmup: 'Yahoo! JAPAN 순위 변화는 시작 후 1시간 정도 데이터가 쌓이면 표시됩니다.', yahooRealtimeComparison: 'Yahoo!リアルタイム検索의 트렌드 순위를 약 1시간 전과 비교했어요.', yahooRealtimeWarmup: 'SNS 트렌드 순위는 약 1시간의 데이터가 쌓인 뒤 변동을 표시합니다.',
+        trendError: '인기 검색어를 가져오지 못했어요.', fetchError: '트렌드를 가져오지 못했어요. 인터넷 연결을 확인한 뒤 새로고침해 주세요.', pagesFeedNotReady: 'GitHub Pages 트렌드 파일이 아직 준비되지 않았어요. Actions 실행이 끝난 뒤 새로고침해 주세요.', bingUnavailable: 'Bing은 공개 실시간 검색어 순위 데이터를 제공하지 않아 이곳에서 순위 목록을 표시할 수 없어요.', bingLink: 'Bing 뉴스 열기 ↗', bingNote: 'Microsoft의 공개 검색 트렌드 API가 종료되어 Bing 검색어 순위를 불러올 수 없습니다.', yahooNote: 'Yahoo! JAPAN 웹 검색의 급상승 검색어 · 최근 1시간 순위 변화', yahooRealtimeNote: 'Yahoo!リアルタイム検索의 화제 키워드 (SNS 트렌드)', yahooComparison: 'Yahoo! JAPAN의 현재 순위를 약 1시간 전 저장된 순위와 비교했어요.', yahooWarmup: 'Yahoo! JAPAN 순위 변화는 시작 후 1시간 정도 데이터가 쌓이면 표시됩니다.', yahooRealtimeComparison: 'Yahoo!リアルタイム検索의 트렌드 순위를 약 1시간 전과 비교했어요.', yahooRealtimeWarmup: 'SNS 트렌드 순위는 약 1시간의 데이터가 쌓인 뒤 변동을 표시합니다.',
         naverUnavailable: '네이버는 실시간 급상승 검색어 서비스를 종료해 현재 순위 데이터를 제공하지 않아요.', naverLink: '네이버 데이터랩 검색어 트렌드 열기 ↗', naverUpdated: 'NAVER 데이터랩', naverNote: '네이버 데이터랩에서 직접 키워드를 지정해 검색 추이를 확인할 수 있어요',
         exploreKicker: 'EXPLORE', exploreTitle: '주제별로 둘러보기', news: '뉴스', newsSub: '오늘의 주요 소식', videos: '동영상', videosSub: '영상 콘텐츠 검색', images: '이미지', imagesSub: '사진과 이미지 찾기', maps: '지도', mapsSub: '장소와 길 찾기',
         quickKicker: 'QUICK ACCESS', quickTitle: '바로가기', edit: '편집', done: '완료', name: '이름', address: '주소 (예: example.com)', add: '추가', quickNameLabel: '바로가기 이름', quickAddressLabel: '바로가기 주소', invalidUrl: '올바른 웹 주소를 입력해 주세요.',
@@ -41,7 +41,7 @@ const copy = {
         eyebrow: 'Your personal start page', headline: 'Explore with <span>Moa</span>', subtitle: "Search across portals and explore today's trends in one place", query: 'What are you curious about?', queryLabel: 'Search query', engineLabel: 'Search engine', search: 'Search', engineNav: 'Choose a search engine', engineGoogle: 'Google', engineNaver: 'NAVER', engineBing: 'Bing', engineYahoo: 'Yahoo! JAPAN',
         trendKicker: "WHAT'S HAPPENING", trendTitle: 'Trending now', refresh: 'Refresh trends', sourceLabel: 'Trend source', trendNote: 'Google Trends · United States · Rank changes over the past hour', loading: 'Loading trends…',
         trendComparison: 'Current Google Trends ranks compared with a snapshot from about one hour ago. New terms are marked NEW.', trendWarmup: 'Rank changes will appear after about an hour of data has been collected.',
-        trendError: 'Could not load trending searches.', fetchError: 'Could not load trends. Check your connection and refresh the page.', bingUnavailable: 'Bing does not provide a public live search-ranking feed, so its search keywords cannot be ranked here.', bingLink: 'Open Bing News ↗', bingNote: 'Microsoft retired its public Bing Search APIs, so live Bing search rankings are unavailable.', yahooNote: 'Yahoo! JAPAN rising web searches · Rank changes over the past hour', yahooRealtimeNote: 'Yahoo! JAPAN Real-Time Search topics (social trends)', yahooComparison: 'Current Yahoo! JAPAN ranks compared with a snapshot from about one hour ago.', yahooWarmup: 'Yahoo! JAPAN rank changes will appear after about an hour of data has been collected.', yahooRealtimeComparison: 'Yahoo! JAPAN Real-Time Search ranks compared with a snapshot from about one hour ago.', yahooRealtimeWarmup: 'Social trend rank changes appear after about an hour of data has been collected.',
+        trendError: 'Could not load trending searches.', fetchError: 'Could not load trends. Check your connection and refresh the page.', pagesFeedNotReady: 'The GitHub Pages trend feed is not ready yet. Refresh after the Actions workflow completes.', bingUnavailable: 'Bing does not provide a public live search-ranking feed, so its search keywords cannot be ranked here.', bingLink: 'Open Bing News ↗', bingNote: 'Microsoft retired its public Bing Search APIs, so live Bing search rankings are unavailable.', yahooNote: 'Yahoo! JAPAN rising web searches · Rank changes over the past hour', yahooRealtimeNote: 'Yahoo! JAPAN Real-Time Search topics (social trends)', yahooComparison: 'Current Yahoo! JAPAN ranks compared with a snapshot from about one hour ago.', yahooWarmup: 'Yahoo! JAPAN rank changes will appear after about an hour of data has been collected.', yahooRealtimeComparison: 'Yahoo! JAPAN Real-Time Search ranks compared with a snapshot from about one hour ago.', yahooRealtimeWarmup: 'Social trend rank changes appear after about an hour of data has been collected.',
         naverUnavailable: 'NAVER no longer provides real-time trending search rankings.', naverLink: 'Open NAVER DataLab search trends ↗', naverUpdated: 'NAVER DataLab', naverNote: 'Explore search trends in NAVER DataLab by choosing your own keywords.',
         exploreKicker: 'EXPLORE', exploreTitle: 'Explore by topic', news: 'News', newsSub: "Today's top stories", videos: 'Videos', videosSub: 'Search video content', images: 'Images', imagesSub: 'Find photos and images', maps: 'Maps', mapsSub: 'Find places and directions',
         quickKicker: 'QUICK ACCESS', quickTitle: 'Quick access', edit: 'Edit', done: 'Done', name: 'Name', address: 'Address (e.g. example.com)', add: 'Add', quickNameLabel: 'Shortcut name', quickAddressLabel: 'Shortcut address', invalidUrl: 'Enter a valid web address.',
@@ -56,7 +56,7 @@ const copy = {
         eyebrow: '自分だけのインターネットスタートページ', headline: '気になることを<span>モア</span>で', subtitle: '複数の検索ポータルと今日の話題をひとつの場所に', query: '何を調べますか？', queryLabel: '検索キーワード', engineLabel: '検索ポータル', search: '検索', engineNav: '検索ポータルを選択', engineGoogle: 'Google', engineNaver: 'NAVER', engineBing: 'Bing', engineYahoo: 'Yahoo! JAPAN',
         trendKicker: "WHAT'S HAPPENING", trendTitle: 'いま注目の話題', refresh: 'トレンドを更新', sourceLabel: 'トレンドの出典', trendNote: 'Google Trends · 日本 · 過去1時間の順位変動', loading: 'トレンドを読み込み中…',
         trendComparison: 'Google Trendsの現在の順位を約1時間前の記録と比較しています。新しい検索語にはNEWと表示します。', trendWarmup: '順位変動は、データが約1時間蓄積されると表示されます。',
-        trendError: '急上昇中の検索語を取得できませんでした。', fetchError: 'トレンドを取得できません。接続を確認してページを更新してください。', bingUnavailable: 'Bingは公開中のリアルタイム検索ランキングを提供していないため、ここに順位を表示できません。', bingLink: 'Bingニュースを開く ↗', bingNote: 'Microsoftの公開Bing Search APIは終了しており、Bingの検索順位を取得できません。', yahooNote: 'Yahoo! JAPAN ウェブ検索の急上昇ワード · 過去1時間の順位変動', yahooRealtimeNote: 'Yahoo!リアルタイム検索のトレンドワード（SNS上の話題）', yahooComparison: 'Yahoo! JAPANの現在の順位を約1時間前の記録と比較しています。', yahooWarmup: 'Yahoo! JAPANの順位変動は、データが約1時間蓄積されると表示されます。', yahooRealtimeComparison: 'Yahoo!リアルタイム検索の順位を約1時間前の記録と比較しています。', yahooRealtimeWarmup: 'SNSトレンドの順位変動は、約1時間分のデータが蓄積されると表示されます。',
+        trendError: '急上昇中の検索語を取得できませんでした。', fetchError: 'トレンドを取得できません。接続を確認してページを更新してください。', pagesFeedNotReady: 'GitHub Pagesのトレンドデータはまだ準備中です。Actionsの実行後にページを更新してください。', bingUnavailable: 'Bingは公開中のリアルタイム検索ランキングを提供していないため、ここに順位を表示できません。', bingLink: 'Bingニュースを開く ↗', bingNote: 'Microsoftの公開Bing Search APIは終了しており、Bingの検索順位を取得できません。', yahooNote: 'Yahoo! JAPAN ウェブ検索の急上昇ワード · 過去1時間の順位変動', yahooRealtimeNote: 'Yahoo!リアルタイム検索のトレンドワード（SNS上の話題）', yahooComparison: 'Yahoo! JAPANの現在の順位を約1時間前の記録と比較しています。', yahooWarmup: 'Yahoo! JAPANの順位変動は、データが約1時間蓄積されると表示されます。', yahooRealtimeComparison: 'Yahoo!リアルタイム検索の順位を約1時間前の記録と比較しています。', yahooRealtimeWarmup: 'SNSトレンドの順位変動は、約1時間分のデータが蓄積されると表示されます。',
         naverUnavailable: 'NAVERはリアルタイム急上昇検索語の提供を終了しました。', naverLink: 'NAVERデータラボの検索トレンドを開く ↗', naverUpdated: 'NAVER データラボ', naverNote: 'NAVERデータラボでキーワードを指定して検索傾向を確認できます。',
         exploreKicker: 'EXPLORE', exploreTitle: 'トピックから探す', news: 'ニュース', newsSub: '今日の主なニュース', videos: '動画', videosSub: '動画を検索', images: '画像', imagesSub: '写真や画像を検索', maps: '地図', mapsSub: '場所やルートを検索',
         quickKicker: 'QUICK ACCESS', quickTitle: 'クイックアクセス', edit: '編集', done: '完了', name: '名前', address: 'URL (例: example.com)', add: '追加', quickNameLabel: 'ショートカット名', quickAddressLabel: 'ショートカットURL', invalidUrl: '有効なウェブアドレスを入力してください。',
@@ -288,10 +288,20 @@ async function loadTrends() {
     message.hidden = true;
     $('#refreshTrends').classList.add('spinning');
     try {
-        const response = await fetch(`/api/trends?geo=${geoByLocale[locale]}&source=${source}`);
-        const data = await response.json();
+        const geo = geoByLocale[locale];
+        let data;
+        if (location.hostname === 'kesv95.github.io') {
+            const response = await fetch(`https://raw.githubusercontent.com/kesv95/PortalWeb/trends-data/trends.json?ts=${Date.now()}`, {cache: 'no-store'});
+            if (!response.ok) throw new Error(text.pagesFeedNotReady);
+            const snapshot = await response.json();
+            data = snapshot.feeds?.[`${geo}:${source}`];
+            if (!data) throw new Error(text.pagesFeedNotReady);
+        } else {
+            const response = await fetch(`/api/trends?geo=${geo}&source=${source}`);
+            data = await response.json();
+            if (!response.ok) throw new Error(text.fetchError);
+        }
         if (requestId !== trendRequestId) return;
-        if (!response.ok) throw new Error(text.fetchError);
         const yahooRealtimeFallback = source === 'yahoo' && data.feedType === 'realtime';
         if (source === 'yahoo') $('#trendNote').textContent = yahooRealtimeFallback ? text.yahooRealtimeNote : text.yahooNote;
         list.innerHTML = '';
@@ -339,7 +349,7 @@ async function loadTrends() {
     } catch (error) {
         if (requestId !== trendRequestId) return;
         list.innerHTML = `<li class="loading">${text.trendError}</li>`;
-        message.textContent = text.fetchError;
+        message.textContent = error.message || text.fetchError;
         message.hidden = false;
     } finally {
         if (requestId === trendRequestId) $('#refreshTrends').classList.remove('spinning');

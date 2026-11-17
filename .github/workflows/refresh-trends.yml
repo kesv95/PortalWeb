@@ -1,0 +1,40 @@
+name: Refresh public trend data
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore the previous snapshot
+        run: git fetch origin +refs/heads/trends-data:refs/remotes/origin/trends-data || true
+
+      - name: Collect country trend feeds
+        run: python scripts/update_trends.py --previous-ref refs/remotes/origin/trends-data --output /tmp/trends.json
+
+      - name: Publish the latest snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          blob=$(git hash-object -w /tmp/trends.json)
+          tree=$(printf '100644 blob %s\ttrends.json\n' "$blob" | git mktree)
+          commit=$(printf 'Refresh trend data\n' | git commit-tree "$tree")
+          git push --force origin "$commit:refs/heads/trends-data"
